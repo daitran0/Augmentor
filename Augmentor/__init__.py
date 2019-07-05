@@ -12,6 +12,8 @@ error, more reproducible, more efficient, and easier to perform.
 """
 
 from .Pipeline import Pipeline, DataFramePipeline, DataPipeline
+from .MyPipeline import Pipeline as MyPipeline
+
 
 __author__ = """Marcus D. Bloice"""
 __email__ = 'marcus.bloice@medunigraz.at'
