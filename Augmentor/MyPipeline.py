@@ -58,7 +58,7 @@ class Pipeline(OriginalPipeline):
                 images[i].save(join(augmentor_image.output_directory, save_name.replace('/', '.')))
         return images[0]
 
-    def process(self):
+    def process(self, rounds=1):
         if len(self.augmentor_images) == 0:
             raise IndexError("There are no images in the pipeline. "
                              "Add a directory using add_directory(), "
@@ -67,10 +67,11 @@ class Pipeline(OriginalPipeline):
         if len(self.operations) == 0:
             raise IndexError("There are no operations associated with this pipeline.")
 
-        with tqdm(total=len(self.augmentor_images), desc="Executing Pipeline", unit=" Samples") as progress_bar:
-                with ThreadPoolExecutor(max_workers=None) as executor:
-                    for result in executor.map(self._execute,self.augmentor_images):
-                        progress_bar.update(1)
+        for _ in range(rounds):
+            with tqdm(total=len(self.augmentor_images), desc="Executing Pipeline", unit=" Samples") as progress_bar:
+                    with ThreadPoolExecutor(max_workers=None) as executor:
+                        for result in executor.map(self._execute,self.augmentor_images):
+                            progress_bar.update(1)
 
 
 
